@@ -959,6 +959,7 @@ RLAPI char *LoadFileText(const char *fileName);                   // Load text d
 RLAPI void SaveFileText(const char *fileName, char *text);        // Save text data to file (write), string must be '\0' terminated
 RLAPI bool FileExists(const char *fileName);                      // Check if file exists
 RLAPI bool IsFileExtension(const char *fileName, const char *ext);// Check file extension
+int MakeDirectory(const char *dirPath);
 RLAPI bool DirectoryExists(const char *dirPath);                  // Check if a directory path exists
 RLAPI const char *GetExtension(const char *fileName);             // Get pointer to extension for a filename string
 RLAPI const char *GetFileName(const char *filePath);              // Get pointer to filename for a path string
@@ -969,6 +970,7 @@ RLAPI const char *GetWorkingDirectory(void);                      // Get current
 RLAPI char **GetDirectoryFiles(const char *dirPath, int *count);  // Get filenames in a directory path (memory should be freed)
 RLAPI void ClearDirectoryFiles(void);                             // Clear directory files paths buffers (free memory)
 RLAPI bool ChangeDirectory(const char *dir);                      // Change working directory, returns true if success
+int FileCopy(const char *srcPath, const char *dstPath);
 RLAPI bool IsFileDropped(void);                                   // Check if a file has been dropped into window
 RLAPI char **GetDroppedFiles(int *count);                         // Get dropped files names (memory should be freed)
 RLAPI void ClearDroppedFiles(void);                               // Clear dropped files paths buffer (free memory)

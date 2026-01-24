@@ -146,3 +146,5 @@
 //#define SUPPORT_TRACELOG_DEBUG      1
 
 #endif  //defined(RAYLIB_CMAKE)
+//as far as I can tell this is the only sade
+#define SUPPORT_FILEFORMAT_JPG 1

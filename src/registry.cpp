@@ -5,11 +5,8 @@
 #include <string>
 #include <tchar.h> // For generic text mappings
 #include <locale>
-#include <codecvt> // Required header
 
 using namespace std;
-
-std::string wstring_to_string(const std::wstring&);
 
 /**Function to read a string value from the registry
  * @param hKeyRoot The root key (e.g., HKEY_LOCAL_MACHINE, HKEY_CURRENT_USER)
@@ -86,27 +83,6 @@ string ReadRegistryStringValue(HKEY hKeyRoot, const string& subKey, const string
         return "";
     }
 }
-
-// std::string wstring_to_string(const std::wstring& wstr) {
-//     // Setup converter
-//     using convert_type = std::codecvt_utf8<wchar_t>;
-//     std::wstring_convert<convert_type, wchar_t> converter;
-//
-//     // Use converter (.to_bytes: wstr -> str, .from_bytes: str -> wstr)
-//     return converter.to_bytes(wstr);
-// }
-
-// int main() {
-//     std::wstring subKey = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion";
-//     std::wstring valueName = L"ProductName";
-//     std::wstring productName = ReadRegistryStringValue(HKEY_LOCAL_MACHINE, subKey, valueName);
-//
-//     if (!productName.empty()) {
-//         std::wcout << L"Windows Product Name: " << productName << std::endl;
-//     }
-//
-//     return 0;
-// }
 
 HKEY extractRootKey(const string &key, int &lengthOut) {
     // HKEY_CLASSES_ROOT

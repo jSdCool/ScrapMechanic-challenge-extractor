@@ -132,7 +132,6 @@ int main() {
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-//TODO Select specific user folder first
         ClearBackground(DARKGRAY);
         if (userSelected) {
             DrawRectangle(0,26-scrollValue,SCREEN_WIDTH,2,BLACK);
