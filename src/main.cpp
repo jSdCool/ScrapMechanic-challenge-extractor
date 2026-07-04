@@ -12,6 +12,7 @@
 #include <iomanip>
 
 #include "registry.hpp"
+#include "messageBox.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -45,6 +46,7 @@ int main() {
         ScrapMechanicAppdataFolder += R"(\Axolot Games\Scrap Mechanic\User\)";
     } else {
         cerr << "Unable to access Appdata folder!"<<endl;
+        showMessageBox("Unable to access Appdata folder!","It no work!");
         return EXIT_FAILURE;
     }
 
@@ -287,6 +289,7 @@ string getSteamLibraryLocation() {
     libFoldersVDF.close();
     if (!success) {
         cerr << "Unable to find Scrap Mechanic in installed steam games!" << endl;
+        showMessageBox("Unable to find Scrap Mechanic in inallted Steam games!","Can't find it");
         throw runtime_error("Unable to find Scrap Mechanic in installed steam games!");
     }
 
@@ -323,6 +326,7 @@ void extractChallenge(const string &challengeSourceFolder, string &userContentFo
 
     //make the destination directory
     if (MakeDirectory((userContentFolder+"\\"+destUUID).c_str())) {
+        showMessageBox("Failed to create desintatoin challenge folder!","A failure!");
         throw runtime_error("Failed to create Destination challenge folder! "+destUUID);
     }
 
