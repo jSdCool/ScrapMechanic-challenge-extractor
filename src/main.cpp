@@ -47,7 +47,7 @@ int main() {
         ScrapMechanicAppdataFolder += R"(\Axolot Games\Scrap Mechanic\User\)";
     } else {
         cerr << "Unable to access Appdata folder!"<<endl;
-        showMessageBox("Unable to access Appdata folder!","It no work!");
+        showErrorMessageBox("Unable to access Appdata folder!","It no work!");
         return EXIT_FAILURE;
     }
 
@@ -95,24 +95,34 @@ int main() {
     vector<json> challengePackJsons;
     vector<json> challengePackDescriptions;
     vector<Texture2D> packPreviews;
+    int numberOfErrors = 0;
     for (const auto &dir : challengePacks) {
-        ifstream packFile(scrapMechanicWorkShopConentLocation + dir+"\\challengePack.json");
-        ifstream descriptionFile(scrapMechanicWorkShopConentLocation + dir+"\\description.json");
-        json a = json::parse(packFile);
-        json b = json::parse(descriptionFile);
+        try {
+            ifstream packFile(scrapMechanicWorkShopConentLocation + dir+"\\challengePack.json");
+            ifstream descriptionFile(scrapMechanicWorkShopConentLocation + dir+"\\description.json");
+            json a = json::parse(packFile);
+            json b = json::parse(descriptionFile);
 
 
-        challengePackJsons.push_back(a);
-        challengePackDescriptions.push_back(b);
+            challengePackJsons.push_back(a);
+            challengePackDescriptions.push_back(b);
 
-        Image img = LoadImage((scrapMechanicWorkShopConentLocation + dir+"\\preview.jpg").c_str());
-        ImageResize(&img,240,135);
-        packPreviews.push_back(LoadTextureFromImage(img));
+            Image img = LoadImage((scrapMechanicWorkShopConentLocation + dir+"\\preview.jpg").c_str());
+            ImageResize(&img,240,135);
+            packPreviews.push_back(LoadTextureFromImage(img));
+        } catch (std::exception &e) {
+            cerr << "Failed to load challenge pack data: "<<e.what()<<endl;
+            numberOfErrors ++;
+        }
     }
 
-    cout << "Found the following workshop chellange packs:" << endl;
+    cout << "Found the following workshop challenge packs:" << endl;
     for (const auto& pack:challengePackDescriptions) {
         cout << pack["name"] << endl;
+    }
+
+    if (numberOfErrors > 0) {
+        showWarningMessageBox("Failed to load "+std::to_string(numberOfErrors)+" challenge packs","Warning");
     }
 
     vector<string> users;
@@ -138,7 +148,7 @@ int main() {
         ClearBackground(DARKGRAY);
         if (userSelected) {
             DrawRectangle(0,26-scrollValue,SCREEN_WIDTH,2,BLACK);
-            for (size_t i=0;i<challengePacks.size();i++) {
+            for (size_t i=0;i<challengePacks.size()-numberOfErrors;i++) {
                 DrawTexture(packPreviews[i],30,30+140*(int)i-scrollValue,WHITE);//pack preview image
                 DrawRectangle(0,166+140*(int)i-scrollValue,SCREEN_WIDTH,2,BLACK);//black line under the image
                 string description = challengePackDescriptions[i]["name"];
@@ -290,7 +300,7 @@ string getSteamLibraryLocation() {
     libFoldersVDF.close();
     if (!success) {
         cerr << "Unable to find Scrap Mechanic in installed steam games!" << endl;
-        showMessageBox("Unable to find Scrap Mechanic in inallted Steam games!","Can't find it");
+        showErrorMessageBox("Unable to find Scrap Mechanic in inallted Steam games!","Can't find it");
         throw runtime_error("Unable to find Scrap Mechanic in installed steam games!");
     }
 
@@ -327,7 +337,7 @@ void extractChallenge(const string &challengeSourceFolder, string &userContentFo
 
     //make the destination directory
     if (MakeDirectory((userContentFolder+"\\"+destUUID).c_str())) {
-        showMessageBox("Failed to create desintatoin challenge folder!","A failure!");
+        showErrorMessageBox("Failed to create desintatoin challenge folder!","A failure!");
         throw runtime_error("Failed to create Destination challenge folder! "+destUUID);
     }
 

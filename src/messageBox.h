@@ -1,4 +1,6 @@
 #pragma once
 #include <string>
 
-void showMessageBox(const std::string& message, const std::string& title);
+void showErrorMessageBox(const std::string& message, const std::string& title);
+
+void showWarningMessageBox(const std::string& message, const std::string& title);
