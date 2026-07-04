@@ -1,3 +1,4 @@
+#include "main.h"
 #include "raylib.h"
 #define NLOHMANN_JSON_DISABLE_CONSTEXPR
 #include "json.hpp"
